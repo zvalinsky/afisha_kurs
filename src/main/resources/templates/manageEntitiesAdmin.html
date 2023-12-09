@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Event list</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+            integrity="sha384-3ho9bXvBzGqxM8B8U+qT6DScF6zrY/8puaA5IihK9z3eX6m8M4aIABbiHPyK8iYq"
+            crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+    <link href="/style.css" rel="stylesheet">
+</head>
+<body>
+<div th:include="header :: body"></div>
+
+
+
+<div class="container mt-4">
+    <ul class="nav nav-tabs" id="myTabs">
+        <li class="nav-item">
+            <a class="nav-link active" id="city-tab" data-toggle="tab" href="#cityForm">Создать город</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="eventType-tab" data-toggle="tab" href="#eventTypeForm">Создать тип события</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="cities-tab" data-toggle="tab" href="#citiesList">Все города</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="eventTypes-tab" data-toggle="tab" href="#eventTypesList">Все типы событий</a>
+        </li>
+    </ul>
+
+    <div class="tab-content mt-2">
+        <!-- Форма для создания City -->
+        <div class="tab-pane fade show active" id="cityForm">
+            <h2>Создать город</h2>
+            <form th:action="@{/admin/createCity}" th:object="${city}" method="post">
+                <label>Имя:</label>
+                <input type="text" th:field="*{name}" required/>
+                <button type="submit" class="btn btn-primary">Создать город</button>
+            </form>
+        </div>
+
+        <!-- Форма для создания EventType -->
+        <div class="tab-pane fade" id="eventTypeForm">
+            <h2>Создать тип события</h2>
+            <form th:action="@{/admin/createEventType}" th:object="${eventType}" method="post">
+                <label>Имя:</label>
+                <input type="text" th:field="*{name}" required/>
+                <button type="submit" class="btn btn-primary">Создать тип события</button>
+            </form>
+        </div>
+
+        <!-- Список всех Cities -->
+        <div class="tab-pane fade" id="citiesList">
+            <h2>Все города</h2>
+            <table border="1">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Имя</th>
+                    <th>Действие</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="city : ${cities}">
+                    <td th:text="${city.id}"></td>
+                    <td th:text="${city.name}"></td>
+                    <td>
+                        <a th:href="@{/admin/deleteCity/{id}(id=${city.id})}" class="btn btn-danger">Удалить</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Список всех EventTypes -->
+        <div class="tab-pane fade" id="eventTypesList">
+            <h2>Все типы событий</h2>
+            <table border="1">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Имя</th>
+                    <th>Действие</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="eventType : ${eventTypes}">
+                    <td th:text="${eventType.id}"></td>
+                    <td th:text="${eventType.name}"></td>
+                    <td>
+                        <a th:href="@{/admin/deleteEventType/{id}(id=${eventType.id})}" class="btn btn-danger">Удалить</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

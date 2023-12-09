@@ -1,0 +1,51 @@
+
+<!-- header.html -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/events">События</a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+
+            <li class="nav-item" th:if="${roleList.contains('ROLE_ADMIN')}">
+                <a class="nav-link" href="/admin/manageEntities">Администратор</a>
+            </li>
+
+            <li class="nav-item" th:if="${roleList.contains('ROLE_MANAGER') || roleList.contains('ROLE_ADMIN')}">
+                <a class="nav-link" href="/manager/events">Мои мероприятия</a>
+            </li>
+
+            <li class="nav-item" th:if="${roleList.contains('ROLE_MANAGER') || roleList.contains('ROLE_ADMIN')}">
+                <a class="nav-link" href="/manager/events/create">Создать событие</a>
+            </li>
+
+            <li class="nav-item" th:if="${(#httpServletRequest.getUserPrincipal() != null) }">
+                <a class="nav-link" href="/logout">Выход из системы</a>
+            </li>
+            <li class="nav-item" th:if="${(#httpServletRequest.getUserPrincipal() == null) }">
+                <a class="nav-link" href="/login">Авторизоваться</a>
+            </li>
+            <li class="nav-item" th:if="${#httpServletRequest.getUserPrincipal() == null}">
+                <a class="nav-link" href="/registration">Зарегистрировать</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+</body>
+</html>

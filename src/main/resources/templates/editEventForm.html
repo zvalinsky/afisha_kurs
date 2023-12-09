@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Добавить событие</title>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+<div th:include="header :: body"></div>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Добавить событие</h2>
+            <form th:action="@{/manager/events/edit/{eventId} (eventId=${event.id}) }" th:object="${event}"
+                  method="post"
+                  enctype="multipart/form-data">
+                <input type="hidden" th:field="*{id}"/>
+
+                <div class="form-group">
+                    <label for="name">Название события</label>
+                    <input type="text" class="form-control" id="name" th:field="*{name}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Описание события</label>
+                    <textarea class="form-control" id="description" th:field="*{description}" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="city">Город</label>
+                    <select class="form-control" id="city" name="cityId" th:field="*{city.id}" required>
+                        <option th:each="city : ${cities}" th:value="${city.id}" th:text="${city.name}"></option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventType">Тип события</label>
+                    <select class="form-control" id="eventType" name="eventTypeId" th:field="*{eventType.id}" required>
+                        <option th:each="eventType : ${eventTypes}" th:value="${eventType.id}"
+                                th:text="${eventType.name}"></option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="startDate">Дата начала</label>
+                    <input type="date" class="form-control" id="startDate" th:field="*{startDate}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="endDate">Даата завершения</label>
+                    <input type="date" class="form-control" id="endDate" th:field="*{endDate}" required>
+                </div>
+
+
+                <button type="submit" class="btn btn-primary">Cохранить изменения</button>
+            </form>
+
+
+            <h2>Добавить картинку</h2>
+
+            <form th:action="@{/manager/events/addImage/{eventId}(eventId=${eventId})}" method="post"
+                  enctype="multipart/form-data">
+                <input type="hidden" name="eventId" th:value="${eventId}"/>
+
+                <div class="form-group">
+                    <label for="picture">Картинка</label>
+                    <input type="file" class="form-control" id="picture" name="picture" accept="image/jpeg"
+                           required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Загрузить изображение</button>
+            </form>
+        </div>
+
+        <div class="col-md-6" th:if="${event.getImages() != null}">
+            <h2>изображение события</h2>
+
+            <img  th:src="@{'/images/' + ${event.getImages().getId()}}" class="d-block w-100" alt="изображение события">
+        </div>
+        <div class="col-md-4">
+            <h4>Посетители</h4>
+            <table>
+            <thead>
+            <tr>
+                <th>Имя</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="visitor : ${event.getVisitors()}">
+                <td th:text="${visitor.username}"></td>
+            </tr>
+            </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-3ho9bXvBzGqxM8B8U+qT6DScF6zrY/8puaA5IihK9z3eX6m8M4aIABbiHPyK8iYq"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WySzE0aQTvxw1gMakV6tJfOEGg1D2Q+gIl"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>

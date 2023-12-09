@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Create Event</title>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div th:include="header :: body"></div>
+
+
+<div class="container mt-4">
+    <h2>Создать событие</h2>
+
+    <form th:action="@{/manager/events/create}" th:object="${event}" method="post">
+        <div class="form-group">
+            <label for="name">Название события</label>
+            <input type="text" class="form-control" id="name" th:field="*{name}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Описание события</label>
+            <textarea class="form-control" id="description" th:field="*{description}" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="city">Город</label>
+            <select class="form-control" id="city" name="cityId" th:field="*{city.id}" required>
+                <option th:each="city : ${cities}" th:value="${city.id}" th:text="${city.name}"></option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="eventType">Тип события</label>
+            <select class="form-control" id="eventType" name="eventTypeId" th:field="*{eventType.id}" required>
+                <option th:each="eventType : ${eventTypes}" th:value="${eventType.id}" th:text="${eventType.name}"></option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="startDate">Дата начала</label>
+            <input type="date" class="form-control" id="startDate" th:field="*{startDate}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="endDate">Дата окончания</label>
+            <input type="date" class="form-control" id="endDate" th:field="*{endDate}" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Создать событие</button>
+    </form>
+</div>
+
+
+
+
+<!-- Bootstrap JS and jQuery (optional, for Bootstrap features) -->
+
+
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/style.css" rel="stylesheet">
+</head>
+<body>
+<div th:include="header :: body"></div>
+
+<div class="container mt-4">
+  <h2>Все события</h2>
+
+  <form th:action="@{/events}" method="get">
+
+    <label>Тип события:</label>
+    <select  name="eventType">
+      <option value="" selected>Выберите тип события</option>
+
+      <option th:each="eventType : ${eventTypes}" th:value="${eventType.name}" th:text="${eventType.name}"></option>
+    </select>
+
+    <label>Город:</label>
+    <select name="city">
+      <option value="" selected>Выберите город</option>
+      <option th:each="city : ${cities}" th:value="${city.name}" th:text="${city.name}"></option>
+    </select>
+
+    <label>Начало периода:</label>
+    <input type="date" name="periodStart"/>
+
+    <label>Окончание периода:</label>
+    <input type="date" name="periodEnd"/>
+
+    <button type="submit" class="btn btn-primary">Фильтр</button>
+  </form>
+
+  <div class="container mt-4">
+    <div class="row">
+      <div th:each="event : ${eventList}" class="col-md-4 mb-4">
+        <div class="card">
+          <img th:if="${event.images != null}"  th:src="@{'/images/' + ${event.images.id}}" class="card-img-top" alt="Изображение события">
+          <img th:if="${event.images == null}"  class="card-img-top" alt="Изображение события">
+
+          <div class="card-body">
+            <h5 class="card-title" th:text="${event.name}"></h5>
+            <p class="card-text" th:text="${event.description}"></p>
+            <p class="card-text">Город: <span th:text="${event.city.name}"></span></p>
+            <p class="card-text">Тип события: <span th:text="${event.eventType.name}"></span></p>
+            <p class="card-text">Дата начала: <span th:text="${event.startDate}"></span></p>
+            <p class="card-text">Дата окончания:<span th:text="${event.endDate}"></span></p>
+          </div>
+
+          <div class="card-footer"  >
+          <form th:action="@{/events/{eventId}/checkIn (eventId=${event.id})}" method="post">
+            <button type="submit" class="btn btn-primary">Иду!</button>
+          </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+
+
+</body>
+</html>
